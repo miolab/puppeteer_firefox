@@ -7,6 +7,7 @@ const searchKeyword = 'JavaScript';
 
 (async () => {
   const browser = await puppeteer.launch({
+    // headless-mode
     headless: false
   });
   const page = await browser.newPage();
@@ -15,14 +16,19 @@ const searchKeyword = 'JavaScript';
     width: 1200,
     height: 1000
   });
+
   await page.goto(targetPage);
 
+  // find form & input keyword
   await page.type('input[class="st-Header_searchInput"]', searchKeyword);
+
+  // (after input keyword into form) click Enter key
   await page.keyboard.press('Enter');
   await page.waitForNavigation({
     waitUntil: "domcontentloaded"
   });
 
+  // sleep
   await page.waitFor(1000);
 
   const result = await page.evaluate(() => {
@@ -40,6 +46,8 @@ const searchKeyword = 'JavaScript';
 
   console.log(result);
 
+  // sleep
   await page.waitFor(2000);
+
   await browser.close();
 })();
